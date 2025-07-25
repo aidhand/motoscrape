@@ -22,10 +22,15 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 .env.production.local
 .env.local
 
+# temp files
+tmp
+downloads
+
 # caches
 .eslintcache
 .cache
 *.tsbuildinfo
+cache.json
 
 # IntelliJ based IDEs
 .idea
