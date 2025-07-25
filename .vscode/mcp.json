@@ -1,0 +1,19 @@
+{
+  "inputs": [],
+  "servers": {
+    "desktop-commander": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@wonderwhy-er/desktop-commander"]
+    },
+    "duckduckgo": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["duckduckgo-mcp-server"]
+    },
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "codespace",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "lint": "oxlint --fix .",
+    "format": "prettier --write --experimental-cli .",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "latest",
+    "oxlint": "latest",
+    "prettier": "latest",
+    "@prettier/plugin-oxc": "latest",
+    "typescript": "latest",
+    "@typescript/native-preview": "latest"
+  }
+}

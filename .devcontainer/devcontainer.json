@@ -1,0 +1,48 @@
+{
+  // Dev container configuration for TypeScript development
+  "name": "TypeScript Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:latest",
+
+  "features": {
+    // Enable Docker-in-Docker feature for containerized Docker usage
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+
+    // Add GitHub CLI for better GitHub integration
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
+  "postCreateCommand": {
+    "bun": "curl -fsSL https://bun.sh/install | bash",
+    "uv": "curl -fsSL https://astral.sh/uv/install.sh | bash"
+  },
+
+  "postStartCommand": {
+    "install-tools": "~/.bun/bin/bun install"
+  },
+
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "typescript.experimental.useTsgo": true
+      },
+
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "GitHub.codespaces",
+        "ms-vscode-remote.remote-containers",
+        "antfu.browse-lite",
+        "docker.docker",
+        "GitHub.copilot-chat",
+        "oxc.oxc-vscode",
+        "YoavBls.pretty-ts-errors",
+        "MASSHUU12.system-info",
+        "TypeScriptTeam.native-preview",
+        "VisualStudioExptTeam.vscodeintellicode",
+        "VisualStudioExptTeam.vscodeintellicode-completions",
+        "ms-azuretools.vscode-docker",
+        "ms-azuretools.vscode-containers"
+      ]
+    }
+  }
+}

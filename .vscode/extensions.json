@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "vitest.explorer",
+    "antfu.vite",
+    "gruntfuggly.todo-tree",
+    "ms-azuretools.vscode-containers",
+    "aaron-bond.better-comments",
+    "usernamehw.errorlens"
+  ]
+}
