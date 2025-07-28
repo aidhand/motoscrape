@@ -1,6 +1,6 @@
 import { Product } from "../../domain/models/product.js";
 import { IStorageService, StorageResult, StorageFormat } from "../../domain/interfaces/storage-service.interface.js";
-import { StorageManager } from "../../storage/storage-manager.js"; // Import existing storage manager
+import { StorageManager } from "../../storage/storage-manager.js";
 
 /**
  * Infrastructure service for data storage

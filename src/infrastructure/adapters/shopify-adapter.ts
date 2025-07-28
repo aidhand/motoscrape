@@ -5,10 +5,10 @@ import {
   DiscoveryResult,
   ExtractionContext,
 } from "./base-adapter.js";
-import { Product } from "../models/product.js";
-import { ProductVariant } from "../models/variant.js";
-import { SiteConfig } from "../models/site-config.js";
-import { DataNormalizer } from "../utils/index.js";
+import { Product } from "../../domain/models/product.js";
+import { ProductVariant } from "../../domain/models/variant.js";
+import { SiteConfig } from "../../domain/models/site-config.js";
+import { DataNormalizer } from "../../utils/index.js";
 
 /**
  * Shopify-specific adapter for sites like MotoHeaven

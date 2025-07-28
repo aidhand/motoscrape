@@ -1,7 +1,7 @@
 import { Page } from "playwright";
-import { Product } from "../models/product.js";
-import { SiteConfig } from "../models/site-config.js";
-import { URLManager } from "../utils/index.js";
+import { SiteConfig } from "../../domain/models/site-config.js";
+import { Product } from "../../domain/models/product.js";
+import { URLManager } from "../../utils/index.js";
 
 /**
  * Page type enumeration for different adapter behaviors

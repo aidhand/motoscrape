@@ -38,4 +38,14 @@ export interface IValidationService {
    * Check if product meets quality standards
    */
   checkProductQuality(product: Product): ValidationResult<Product>;
+
+  /**
+   * Get validation statistics
+   */
+  getStats(): {
+    totalValidated: number;
+    validProducts: number;
+    invalidProducts: number;
+    errors: string[];
+  };
 }

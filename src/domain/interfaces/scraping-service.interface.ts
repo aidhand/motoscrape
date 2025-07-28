@@ -1,10 +1,11 @@
+import { EventEmitter } from "events";
 import { Product } from "../models/product.js";
 import { ScrapingResult } from "../../shared/types/scraping.types.js";
 
 /**
  * Interface for core scraping business logic
  */
-export interface IScrapingService {
+export interface IScrapingService extends EventEmitter {
   /**
    * Process a single URL and extract product data
    */

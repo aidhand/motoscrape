@@ -255,6 +255,9 @@ export class ValidationService implements IValidationService {
   }
 
   private formatZodError(error: z.ZodError): string {
+    if (!error.errors || !Array.isArray(error.errors)) {
+      return 'Validation error';
+    }
     return error.errors
       .map(err => `${err.path.join('.')}: ${err.message}`)
       .join(', ');

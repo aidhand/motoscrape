@@ -6,7 +6,8 @@ import { IBrowserService } from "../interfaces/browser-service.interface.js";
 import { IValidationService } from "../interfaces/validation-service.interface.js";
 import { IRateLimitingService } from "../interfaces/rate-limiting-service.interface.js";
 import { ScrapingResult } from "../../shared/types/scraping.types.js";
-import { adapterRegistry, PageType } from "../../infrastructure/adapters/adapter-registry.js";
+import { adapterRegistry } from "../../adapters/adapter-registry.js";
+import { PageType } from "../../adapters/base-adapter.js";
 
 /**
  * Core domain service for scraping operations

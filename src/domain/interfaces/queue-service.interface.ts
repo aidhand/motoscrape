@@ -1,3 +1,5 @@
+import { EventEmitter } from "events";
+
 /**
  * Queue item for processing
  */
@@ -26,7 +28,7 @@ export interface QueueStatus {
 /**
  * Interface for queue management service
  */
-export interface IQueueService {
+export interface IQueueService extends EventEmitter {
   /**
    * Add a single URL to the queue
    */

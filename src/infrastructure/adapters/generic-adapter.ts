@@ -5,8 +5,8 @@ import {
   DiscoveryResult,
   ExtractionContext,
 } from "./base-adapter.js";
-import { Product } from "../models/product.js";
-import { SiteConfig } from "../models/site-config.js";
+import { Product } from "../../domain/models/product.js";
+import { SiteConfig } from "../../domain/models/site-config.js";
 
 /**
  * Generic fallback adapter for unknown e-commerce platforms

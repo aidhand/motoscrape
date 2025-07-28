@@ -2,7 +2,7 @@ import { BaseAdapter } from "./base-adapter.js";
 import { ShopifyAdapter } from "./shopify-adapter.js";
 import { MCASAdapter } from "./mcas-adapter.js";
 import { GenericAdapter } from "./generic-adapter.js";
-import { SiteConfig } from "../models/site-config.js";
+import { SiteConfig } from "../../domain/models/site-config.js";
 
 /**
  * Registry for managing site-specific adapters
