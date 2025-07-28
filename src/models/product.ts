@@ -78,10 +78,14 @@ export const ProductSchema = z.object({
     .optional(),
 
   metadata: z.object({
-    scraped_at: z.date(),
+    scraped_at: z.union([z.date(), z.string().datetime()]).transform((val) => 
+      typeof val === 'string' ? new Date(val) : val
+    ),
     source_url: z.string(),
     site: z.string(),
-    last_updated: z.date().optional(),
+    last_updated: z.union([z.date(), z.string().datetime()]).transform((val) => 
+      typeof val === 'string' ? new Date(val) : val
+    ).optional(),
     scrape_quality_score: z.number().optional(), // 0-1 based on data completeness
   }),
 });
