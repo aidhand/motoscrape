@@ -383,8 +383,7 @@ export class ShopifyAdapter extends BaseAdapter {
         images,
         description: {
           full: description || undefined,
-          specifications:
-            Object.keys(specifications).length > 0 ? specifications : undefined,
+          specifications: specifications && Object.keys(specifications).length > 0 ? specifications : undefined,
         },
         metadata: {
           scraped_at: new Date(),
@@ -943,6 +942,237 @@ export class ShopifyAdapter extends BaseAdapter {
   /**
    * Infer brand from product name using common motorcycle gear brands
    */
+  /**
+   * Extract basic product information from collection/listing pages
+   */
+  async extractProductSummary(
+    context: ExtractionContext
+  ): Promise<Partial<Product>[]> {
+    const { page } = context;
+    const products: Partial<Product>[] = [];
+
+    try {
+      // Wait for product listing to load
+      await this.waitForSelector(
+        page,
+        this.siteConfig.selectors.product_container || ".product-item"
+      );
+
+      // Get all product containers
+      const productElements = await page.$$(
+        this.siteConfig.selectors.product_container || ".product-item"
+      );
+
+      for (let i = 0; i < productElements.length; i++) {
+        const element = productElements[i];
+
+        try {
+          const name = await this.safeExtractText(
+            page,
+            this.siteConfig.selectors.product_name || ".product-name",
+            element
+          );
+
+          const priceText = await this.safeExtractText(
+            page,
+            this.siteConfig.selectors.price || ".price",
+            element
+          );
+
+          const brand = await this.safeExtractText(
+            page,
+            this.siteConfig.selectors.brand || ".brand",
+            element
+          );
+
+          const imageUrl = await this.safeExtractAttribute(
+            page,
+            "img",
+            "src",
+            element
+          );
+
+          const productUrl = await this.safeExtractAttribute(
+            page,
+            "a",
+            "href",
+            element
+          );
+
+          if (name && priceText) {
+            const priceData = this.parsePrice(priceText);
+            const normalizedUrl = productUrl ? this.normalizeUrl(productUrl) : undefined;
+
+            const product: Partial<Product> = {
+              id: normalizedUrl ? this.generateProductId(normalizedUrl) : `summary-${i}`,
+              name,
+              brand: brand || this.inferBrandFromName(name) || "Unknown",
+              price: {
+                regular: priceData.regular,
+                sale: priceData.sale,
+                currency: "AUD" as const,
+                discount_percentage: priceData.sale
+                  ? Math.round((1 - priceData.sale / priceData.regular) * 100)
+                  : undefined,
+              },
+              images: imageUrl ? [this.normalizeUrl(imageUrl)] : [],
+              metadata: {
+                scraped_at: new Date(),
+                source_url: normalizedUrl || "",
+                site: this.siteConfig.name,
+              },
+            };
+
+            products.push(product);
+          }
+        } catch (error) {
+          console.warn(`Error extracting product summary ${i}:`, error);
+        }
+      }
+    } catch (error) {
+      console.error("Error extracting product summaries:", error);
+    }
+
+    return products;
+  }
+
+  /**
+   * Extract product specifications from product pages
+   */
+  private async extractSpecifications(page: Page): Promise<Record<string, any> | undefined> {
+    const specifications: Record<string, any> = {};
+
+    try {
+      // Try different specification selector patterns
+      const specSelectors = [
+        this.siteConfig.selectors.specifications || ".product-specs",
+        ".specifications",
+        ".spec-table",
+        ".product-specifications",
+        "[data-specifications]",
+        ".product-details table",
+        ".product-info table"
+      ];
+
+      for (const selector of specSelectors) {
+        try {
+          const specElements = await page.$$(selector);
+          if (specElements.length > 0) {
+            // Extract table-based specifications
+            const tableSpecs = await page.evaluate((sel) => {
+              const specs: Record<string, any> = {};
+              const tables = document.querySelectorAll(sel + ' table, ' + sel);
+              
+              tables.forEach(table => {
+                const rows = table.querySelectorAll('tr');
+                rows.forEach(row => {
+                  const cells = row.querySelectorAll('td, th');
+                  if (cells.length >= 2) {
+                    const key = cells[0].textContent?.trim();
+                    const value = cells[1].textContent?.trim();
+                    if (key && value) {
+                      specs[key] = value;
+                    }
+                  }
+                });
+              });
+              
+              return specs;
+            }, selector);
+
+            Object.assign(specifications, tableSpecs);
+          }
+        } catch {
+          // Continue to next selector
+        }
+      }
+
+      // Extract key-value pairs from description if no specs found
+      if (Object.keys(specifications).length === 0) {
+        const description = await this.safeExtractText(page, ".product-description, .description");
+        if (description) {
+          const lines = description.split('\n').filter(line => line.includes(':'));
+          lines.forEach(line => {
+            const [key, ...valueParts] = line.split(':');
+            if (key && valueParts.length > 0) {
+              specifications[key.trim()] = valueParts.join(':').trim();
+            }
+          });
+        }
+      }
+
+      return Object.keys(specifications).length > 0 ? specifications : undefined;
+    } catch (error) {
+      console.error("Error extracting specifications:", error);
+      return undefined;
+    }
+  }
+
+  /**
+   * Extract product availability information
+   */
+  private async extractAvailability(page: Page): Promise<{
+    in_stock: boolean;
+    stock_status: "in_stock" | "out_of_stock" | "backorder" | "preorder";
+    quantity?: number;
+  }> {
+    try {
+      // Check for availability indicators
+      const stockSelectors = [
+        this.siteConfig.selectors.stock_status || ".stock-status",
+        ".availability",
+        ".stock-info",
+        "[data-stock]",
+        ".product-availability"
+      ];
+
+      let stockText = "";
+      for (const selector of stockSelectors) {
+        const text = await this.safeExtractText(page, selector);
+        if (text) {
+          stockText = text.toLowerCase();
+          break;
+        }
+      }
+
+      // Check add to cart button state
+      const addToCartButton = await page.$('.btn-add-to-cart, [data-add-to-cart], .product-form button[type="submit"]');
+      const isButtonDisabled = addToCartButton ? await addToCartButton.isDisabled() : true;
+
+      // Determine stock status
+      let in_stock = true;
+      let stock_status: "in_stock" | "out_of_stock" | "backorder" | "preorder" = "in_stock";
+
+      if (isButtonDisabled || 
+          stockText.includes("out of stock") || 
+          stockText.includes("sold out") ||
+          stockText.includes("unavailable")) {
+        in_stock = false;
+        stock_status = "out_of_stock";
+      } else if (stockText.includes("backorder") || stockText.includes("back order")) {
+        stock_status = "backorder";
+      } else if (stockText.includes("pre-order") || stockText.includes("preorder")) {
+        stock_status = "preorder";
+      }
+
+      // Try to extract quantity if available
+      const quantityMatch = stockText.match(/(\d+)\s*(in stock|available|left)/);
+      const quantity = quantityMatch ? parseInt(quantityMatch[1]) : undefined;
+
+      return {
+        in_stock,
+        stock_status,
+        quantity
+      };
+    } catch (error) {
+      console.error("Error extracting availability:", error);
+      return {
+        in_stock: false,
+        stock_status: "out_of_stock"
+      };
+    }
+  }
+
   private inferBrandFromName(productName: string): string | null {
     if (!productName) return null;
 
