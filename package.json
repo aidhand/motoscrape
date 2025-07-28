@@ -4,23 +4,30 @@
   "private": true,
   "scripts": {
     "start": "tsx ./src/index.ts",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
     "lint": "oxlint --fix .",
     "format": "prettier --write --experimental-cli .",
     "typecheck": "tsc --noEmit",
-    "postinstall:playwright": "pnpm exec playwright install chromium",
-    "postinstall": "pnpm run postinstall:playwright"
+    "postinstall": "pnpm run postinstall:playwright",
+    "postinstall:playwright": "npx playwright install chromium --with-deps"
   },
   "dependencies": {
+    "better-sqlite3": "^12.2.0",
     "playwright": "^1.54.1",
     "zod": "^4.0.10"
   },
   "devDependencies": {
     "@prettier/plugin-oxc": "latest",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/node": "latest",
     "@typescript/native-preview": "latest",
+    "@vitest/ui": "^3.2.4",
     "oxlint": "latest",
     "prettier": "latest",
     "tsx": "^4.20.3",
-    "typescript": "latest"
+    "typescript": "latest",
+    "vitest": "^3.2.4"
   }
 }
