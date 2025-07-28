@@ -266,12 +266,30 @@ export class ShopifyAdapter extends BaseAdapter {
       );
       const priceData = this.parsePrice(priceText || "");
 
-      // Extract brand
-      const brand =
-        (await this.safeExtractText(
-          page,
-          ".product-vendor, .brand, [data-vendor]"
-        )) || "Unknown";
+      // Extract brand with comprehensive selectors and fallback logic
+      let brand = await this.safeExtractText(
+        page,
+        [
+          // Standard Shopify selectors
+          ".product-vendor",
+          ".brand",
+          "[data-vendor]",
+          // Site-specific selectors from configuration
+          this.siteConfig.selectors.brand,
+          // Additional common selectors
+          ".product-brand",
+          ".vendor",
+          ".product-meta .brand",
+          ".product-details .brand",
+          "[data-product-vendor]",
+          ".product-vendor-name",
+        ].filter(Boolean).join(", ")
+      );
+
+      // If brand extraction failed, try to infer from product name
+      if (!brand || brand === "Unknown") {
+        brand = this.inferBrandFromName(name) || "Unknown";
+      }
 
       // Extract SKU
       const sku = await this.safeExtractText(
@@ -854,6 +872,46 @@ export class ShopifyAdapter extends BaseAdapter {
   /**
    * Calculate a quality score for the extracted data
    */
+  /**
+   * Infer brand from product name using common motorcycle gear brands
+   */
+  private inferBrandFromName(productName: string): string | null {
+    if (!productName) return null;
+
+    // Common motorcycle gear brands (Australian market focused)
+    const brands = [
+      "Dainese", "Alpinestars", "AGV", "Shoei", "Arai", "Bell", "Shark",
+      "HJC", "Scorpion", "TCX", "Sidi", "Forma", "Gaerne", "Rev'it",
+      "Revit", "Oxford", "Rukka", "Klim", "RST", "Held", "Spidi",
+      "Five", "Knox", "Richa", "Bull-it", "Bullitt", "Icon", "Joe Rocket",
+      "Alpinestars", "Thor", "Fox", "Oneal", "O'Neal", "Leatt", "Troy Lee",
+      "Acerbis", "UFO", "Polisport", "Racetech", "Race Tech", "Pro Grip",
+      "ProGrip", "Michelin", "Pirelli", "Bridgestone", "Dunlop", "Continental",
+      "Metzeler", "Avon", "Shinko", "Kenda", "Maxxis", "IRC", "Heidenau"
+    ];
+
+    const nameUpper = productName.toUpperCase();
+    
+    for (const brand of brands) {
+      const brandUpper = brand.toUpperCase();
+      
+      // Check if brand appears at the start of the product name
+      if (nameUpper.startsWith(brandUpper + " ") || 
+          nameUpper.startsWith(brandUpper + "-") ||
+          nameUpper === brandUpper) {
+        return brand;
+      }
+      
+      // Check if brand appears as a whole word in the product name
+      const regex = new RegExp(`\\b${brandUpper}\\b`, 'i');
+      if (regex.test(nameUpper)) {
+        return brand;
+      }
+    }
+
+    return null;
+  }
+
   private calculateQualityScore(
     name: string,
     price: number,
