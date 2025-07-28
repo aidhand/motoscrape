@@ -8,6 +8,7 @@ import {
 import { Product } from "../models/product.js";
 import { ProductVariant } from "../models/variant.js";
 import { SiteConfig } from "../models/site-config.js";
+import { DataNormalizer } from "../utils/index.js";
 
 /**
  * Shopify-specific adapter for sites like MotoHeaven
@@ -406,162 +407,177 @@ export class ShopifyAdapter extends BaseAdapter {
   }
 
   /**
-   * Extract basic product summaries from collection pages
+   * Extract product using DataNormalizer for consistent data structure
    */
-  async extractProductSummary(
-    context: ExtractionContext
-  ): Promise<Partial<Product>[]> {
-    const { page } = context;
-    const products: Partial<Product>[] = [];
+  async extractProductWithNormalizer(context: ExtractionContext): Promise<Product | null> {
+    const { page, url } = context;
 
     try {
-      const productElements = await page.$$(
-        this.siteConfig.selectors.product_container
+      // Wait for product content to load
+      const productLoaded = await this.waitForSelector(
+        page,
+        ".product-form, [data-product-id], .product-single"
       );
-
-      for (const element of productElements) {
-        try {
-          const name = await this.safeExtractText(
-            page,
-            this.siteConfig.selectors.product_name,
-            element
-          );
-          const priceText = await this.safeExtractText(
-            page,
-            this.siteConfig.selectors.price,
-            element
-          );
-          const brand = this.siteConfig.selectors.brand
-            ? await this.safeExtractText(
-                page,
-                this.siteConfig.selectors.brand,
-                element
-              )
-            : null;
-
-          if (!name || !priceText) continue;
-
-          const priceData = this.parsePrice(priceText);
-          const imageUrl = await this.safeExtractAttribute(
-            page,
-            this.siteConfig.selectors.images,
-            "src",
-            element
-          );
-
-          const product: Partial<Product> = {
-            name,
-            brand: brand || undefined,
-            price: {
-              regular: priceData.regular,
-              sale: priceData.sale,
-              currency: "AUD",
-              discount_percentage: priceData.sale
-                ? Math.round((1 - priceData.sale / priceData.regular) * 100)
-                : undefined,
-            },
-            images: imageUrl ? [this.normalizeUrl(imageUrl)] : [],
-            availability: {
-              in_stock: true, // Assume in stock on collection pages
-              stock_status: "in_stock" as const,
-            },
-            metadata: {
-              scraped_at: new Date(),
-              source_url: context.url,
-              site: this.siteConfig.name,
-            },
-          };
-
-          products.push(product);
-        } catch (error) {
-          console.warn("Error extracting product summary:", error);
-        }
+      if (!productLoaded) {
+        console.warn(`Product content not found on ${url}`);
+        return null;
       }
+
+      // Extract raw product data
+      const rawData: Record<string, any> = {
+        // Basic product information
+        name: await this.safeExtractText(page, "h1, .product-title, [data-product-title]"),
+        title: await this.safeExtractText(page, "h1, .product-title"),
+        
+        // Brand information
+        brand: await this.safeExtractText(page, ".product-vendor, .brand, [data-vendor], .vendor, .product-brand") ||
+               await this.safeExtractText(page, this.siteConfig.selectors.brand || ""),
+        
+        // Price information
+        price: await this.safeExtractText(page, ".price, .product-price, [data-price]"),
+        regular_price: await this.safeExtractText(page, ".price-regular, .original-price"),
+        sale_price: await this.safeExtractText(page, ".price-sale, .sale-price"),
+        
+        // Product details
+        description: await this.safeExtractText(page, ".product-description, .rte, [data-description]"),
+        category: await this.safeExtractText(page, ".breadcrumb a:last-child, .product-type"),
+        
+        // Product identifiers
+        sku: await this.safeExtractText(page, ".sku, [data-sku], .product-sku"),
+        product_id: await page.getAttribute("[data-product-id]", "data-product-id"),
+        
+        // Images
+        images: await this.extractImageUrls(page),
+        
+        // Variants
+        variants: await this.extractVariantsForNormalizer(page),
+        
+        // Availability
+        in_stock: await this.checkAvailability(page),
+        
+        // Source metadata
+        source_url: url,
+        _source_url: url
+      };
+
+      // Use DataNormalizer to create consistent product structure
+      const normalizedProduct = DataNormalizer.normalizeProduct(rawData, this.siteConfig.name);
+
+      // Validate the product
+      const validation = DataNormalizer.validateProduct(normalizedProduct);
+      if (!validation.valid) {
+        console.warn(`Product validation failed for ${url}:`, validation.errors);
+        // Return the product anyway but log the validation issues
+      }
+
+      return normalizedProduct;
+
     } catch (error) {
-      console.error("Error extracting product summaries:", error);
+      console.error(`Error extracting product from ${url}:`, error);
+      return null;
     }
-
-    return products;
   }
 
   /**
-   * Extract category from breadcrumbs or URL
+   * Extract variants in a format suitable for DataNormalizer
    */
-  private async extractCategory(page: Page, url: string): Promise<string> {
-    // Try breadcrumbs first
-    const breadcrumbText = await this.safeExtractText(
-      page,
-      ".breadcrumb, .breadcrumbs, [data-breadcrumb]"
-    );
-    if (breadcrumbText) {
-      const breadcrumbs = breadcrumbText
-        .split(/[>/]/)
-        .map((s) => s.trim())
-        .filter((s) => s);
-      if (breadcrumbs.length > 1) {
-        return breadcrumbs[breadcrumbs.length - 2]; // Second to last is usually the category
-      }
-    }
+  private async extractVariantsForNormalizer(page: Page): Promise<any[]> {
+    try {
+      const variants = await page.evaluate(() => {
+        // Try to get Shopify product JSON
+        const productJson = document.querySelector('script[type="application/json"][data-product-json]');
+        if (productJson && productJson.textContent) {
+          const product = JSON.parse(productJson.textContent);
+          return product.variants || [];
+        }
 
-    // Extract from URL
-    const urlParts = url.split("/");
-    const collectionsIndex = urlParts.indexOf("collections");
-    if (collectionsIndex >= 0 && collectionsIndex < urlParts.length - 1) {
-      return urlParts[collectionsIndex + 1].replace(/-/g, " ");
-    }
+        // Fallback to manual extraction
+        const variantSelectors = [
+          'select[name="id"] option',
+          '.product-variants .variant-option',
+          '.product-form select option'
+        ];
 
-    return "Unknown";
+        for (const selector of variantSelectors) {
+          const elements = document.querySelectorAll(selector);
+          if (elements.length > 0) {
+            return Array.from(elements).map((el, index) => ({
+              id: el.getAttribute('value') || `variant-${index}`,
+              title: el.textContent?.trim() || `Variant ${index + 1}`,
+              available: !el.hasAttribute('disabled'),
+              option1: el.textContent?.trim()
+            }));
+          }
+        }
+
+        return [];
+      });
+
+      return variants;
+    } catch (error) {
+      console.error('Error extracting variants:', error);
+      return [];
+    }
   }
 
   /**
-   * Extract product images - enhanced for MotoHeaven structure
+   * Extract image URLs for DataNormalizer
    */
-  private async extractImages(page: Page): Promise<string[]> {
-    const imageSelectors = [
-      ".product-images img",
-      ".product-gallery img",
-      ".product-media img",
-      "[data-product-image]",
-      // MotoHeaven-specific selectors
-      'img[alt*="AGV"]',
-      'img[alt*="Shark"]',
-      'img[alt*="Shoei"]',
-      'img[alt*="Alpinestars"]',
-      'img[src*="agv"]',
-      'img[src*="helmet"]',
-      // Generic product image selectors
-      ".product-form img",
-      ".product-single img",
-    ];
+  private async extractImageUrls(page: Page): Promise<string[]> {
+    try {
+      const images = await page.evaluate(() => {
+        const imageElements = document.querySelectorAll([
+          '.product-images img',
+          '.product-gallery img', 
+          '.product-photos img',
+          '.product-image img',
+          '[data-product-image] img'
+        ].join(', '));
 
-    const allImages: string[] = [];
+        const urls: string[] = [];
+        imageElements.forEach(img => {
+          const src = img.getAttribute('src') || img.getAttribute('data-src');
+          if (src && !urls.includes(src)) {
+            // Convert relative URLs to absolute
+            const absoluteUrl = src.startsWith('//') ? `https:${src}` : 
+                              src.startsWith('/') ? `${window.location.origin}${src}` : src;
+            urls.push(absoluteUrl);
+          }
+        });
 
-    for (const selector of imageSelectors) {
-      const images = await this.safeExtractAttributes(page, selector, "src");
-      allImages.push(...images);
+        return urls;
+      });
+
+      return images;
+    } catch (error) {
+      console.error('Error extracting images:', error);
+      return [];
     }
+  }
 
-    // Filter out small icons, logos, and non-product images
-    const productImages = allImages.filter((imgSrc) => {
-      const url = imgSrc.toLowerCase();
-      return (
-        !url.includes("logo") &&
-        !url.includes("icon") &&
-        !url.includes("payment") &&
-        !url.includes("social") &&
-        !url.includes("trustpilot") &&
-        (url.includes("agv") ||
-          url.includes("helmet") ||
-          url.includes("motorcycle") ||
-          url.includes("product") ||
-          url.includes("cdn.shop"))
-      );
-    });
+  /**
+   * Check product availability
+   */
+  private async checkAvailability(page: Page): Promise<boolean> {
+    try {
+      // Check for add to cart button
+      const addToCartExists = await page.$('.btn-add-to-cart, [data-add-to-cart], .product-form button[type="submit"]');
+      if (!addToCartExists) return false;
 
-    // Normalize and deduplicate
-    return Array.from(
-      new Set(productImages.map((img) => this.normalizeUrl(img)))
-    );
+      // Check if button is disabled
+      const isDisabled = await page.evaluate(() => {
+        const button = document.querySelector('.btn-add-to-cart, [data-add-to-cart], .product-form button[type="submit"]');
+        return button ? button.hasAttribute('disabled') : true;
+      });
+
+      // Check for out of stock text
+      const outOfStockText = await page.textContent('.out-of-stock, .sold-out, [data-sold-out]');
+      
+      return !isDisabled && !outOfStockText;
+    } catch (error) {
+      console.error('Error checking availability:', error);
+      return false;
+    }
   }
 
   /**
@@ -829,152 +845,99 @@ export class ShopifyAdapter extends BaseAdapter {
   }
 
   /**
-   * Extract product specifications
+   * Extract category from breadcrumbs or URL
    */
-  private async extractSpecifications(
-    page: Page
-  ): Promise<Record<string, string>> {
-    const specs: Record<string, string> = {};
-
-    try {
-      // Strategy 1: Look for specification tables or lists
-      const specSelectors = [
-        ".product-specs tr",
-        ".specifications li",
-        ".product-details tr",
-        "[data-product-specs] tr",
-        ".spec-table tr",
-        ".product-features li",
-      ];
-
-      for (const selector of specSelectors) {
-        const elements = await page.$$(selector);
-        for (const element of elements) {
-          const text = await element.textContent();
-          if (text && text.includes(":")) {
-            const [key, ...valueParts] = text.split(":");
-            const value = valueParts.join(":").trim();
-            if (key && value) {
-              specs[key.trim()] = value;
-            }
-          }
-        }
+  private async extractCategory(page: Page, url: string): Promise<string> {
+    // Try breadcrumbs first
+    const breadcrumbText = await this.safeExtractText(
+      page,
+      ".breadcrumb, .breadcrumbs, [data-breadcrumb]"
+    );
+    if (breadcrumbText) {
+      const breadcrumbs = breadcrumbText
+        .split(/[>/]/)
+        .map((s) => s.trim())
+        .filter((s) => s);
+      if (breadcrumbs.length > 1) {
+        return breadcrumbs[breadcrumbs.length - 2]; // Second to last is usually the category
       }
-
-      // Strategy 2: Look for structured specification sections
-      const specSections = await page.$$(
-        ".product-specs dl, .specifications dl"
-      );
-      for (const section of specSections) {
-        const terms = await section.$$("dt");
-        const definitions = await section.$$("dd");
-
-        for (let i = 0; i < Math.min(terms.length, definitions.length); i++) {
-          const key = await terms[i].textContent();
-          const value = await definitions[i].textContent();
-
-          if (key && value) {
-            specs[key.trim()] = value.trim();
-          }
-        }
-      }
-
-      // Strategy 3: Look for attribute lists with specific patterns
-      const attrElements = await page.$$(
-        ".product-attributes .attribute, .product-info .info-item"
-      );
-      for (const element of attrElements) {
-        const labelEl = await element.$(".label, .attribute-label, strong");
-        const valueEl = await element.$(
-          ".value, .attribute-value, span:not(.label)"
-        );
-
-        if (labelEl && valueEl) {
-          const key = await labelEl.textContent();
-          const value = await valueEl.textContent();
-
-          if (key && value) {
-            specs[key.trim().replace(":", "")] = value.trim();
-          }
-        }
-      }
-
-      // Strategy 4: Extract from meta tags for structured data
-      const metaSpecs = await page.$$eval(
-        'script[type="application/ld+json"]',
-        (scripts) => {
-          const specs: Record<string, string> = {};
-
-          for (const script of scripts) {
-            try {
-              const data = JSON.parse(script.textContent || "");
-              if (data.additionalProperty) {
-                data.additionalProperty.forEach((prop: any) => {
-                  if (prop.name && prop.value) {
-                    specs[prop.name] = prop.value;
-                  }
-                });
-              }
-            } catch {
-              // Ignore invalid JSON
-            }
-          }
-
-          return specs;
-        }
-      );
-
-      Object.assign(specs, metaSpecs);
-    } catch (error) {
-      console.warn("Error extracting specifications:", error);
     }
 
-    return specs;
+    // Extract from URL
+    const urlParts = url.split("/");
+    const collectionsIndex = urlParts.indexOf("collections");
+    if (collectionsIndex >= 0 && collectionsIndex < urlParts.length - 1) {
+      return urlParts[collectionsIndex + 1].replace(/-/g, " ");
+    }
+
+    return "Unknown";
   }
 
   /**
-   * Extract availability information
+   * Extract product images - enhanced for MotoHeaven structure
    */
-  private async extractAvailability(page: Page): Promise<{
-    in_stock: boolean;
-    stock_status: "in_stock" | "out_of_stock" | "backorder" | "preorder";
-  }> {
-    try {
-      const stockText = await this.safeExtractText(
-        page,
-        ".stock-status, .inventory-status, [data-stock]"
-      );
+  private async extractImages(page: Page): Promise<string[]> {
+    const imageSelectors = [
+      ".product-images img",
+      ".product-gallery img",
+      ".product-media img",
+      "[data-product-image]",
+      // MotoHeaven-specific selectors
+      'img[alt*="AGV"]',
+      'img[alt*="Shark"]',
+      'img[alt*="Shoei"]',
+      'img[alt*="Alpinestars"]',
+      'img[src*="agv"]',
+      'img[src*="helmet"]',
+      // Generic product image selectors
+      ".product-form img",
+      ".product-single img",
+    ];
 
-      if (stockText) {
-        const lowerText = stockText.toLowerCase();
-        if (
-          lowerText.includes("out of stock") ||
-          lowerText.includes("sold out")
-        ) {
-          return { in_stock: false, stock_status: "out_of_stock" };
-        }
-        if (lowerText.includes("backorder")) {
-          return { in_stock: false, stock_status: "backorder" };
-        }
-        if (lowerText.includes("preorder")) {
-          return { in_stock: false, stock_status: "preorder" };
-        }
-      }
+    const allImages: string[] = [];
 
-      // Check if add to cart button is disabled
-      const addToCartDisabled =
-        (await page.$(
-          ".btn-product-form[disabled], .product-form__cart[disabled]"
-        )) !== null;
-      if (addToCartDisabled) {
-        return { in_stock: false, stock_status: "out_of_stock" };
-      }
-    } catch (error) {
-      console.warn("Error extracting availability:", error);
+    for (const selector of imageSelectors) {
+      const images = await this.safeExtractAttributes(page, selector, "src");
+      allImages.push(...images);
     }
 
-    // Default to in stock
-    return { in_stock: true, stock_status: "in_stock" };
+    // Filter out small icons, logos, and non-product images
+    const productImages = allImages.filter((imgSrc) => {
+      const url = imgSrc.toLowerCase();
+      return (
+        !url.includes("logo") &&
+        !url.includes("icon") &&
+        !url.includes("payment") &&
+        !url.includes("social") &&
+        !url.includes("trustpilot") &&
+        (url.includes("agv") ||
+          url.includes("helmet") ||
+          url.includes("motorcycle") ||
+          url.includes("product") ||
+          url.includes("cdn.shop"))
+      );
+    });
+
+    // Normalize and deduplicate
+    return Array.from(
+      new Set(productImages.map((img) => this.normalizeUrl(img)))
+    );
+  }
+
+  private calculateQualityScore(
+    name: string,
+    price: number,
+    imageCount: number,
+    description?: string
+  ): number {
+    let score = 0;
+
+    if (name && name.length > 5) score += 0.3;
+    if (price > 0) score += 0.3;
+    if (imageCount > 0) score += 0.2;
+    if (description && description.length > 20) score += 0.2;
+
+    return Math.min(1, score);
   }
 
   /**
@@ -1063,21 +1026,5 @@ export class ShopifyAdapter extends BaseAdapter {
     }
 
     return null;
-  }
-
-  private calculateQualityScore(
-    name: string,
-    price: number,
-    imageCount: number,
-    description?: string
-  ): number {
-    let score = 0;
-
-    if (name && name.length > 5) score += 0.3;
-    if (price > 0) score += 0.3;
-    if (imageCount > 0) score += 0.2;
-    if (description && description.length > 20) score += 0.2;
-
-    return Math.min(1, score);
   }
 }

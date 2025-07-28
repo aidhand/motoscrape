@@ -1,6 +1,7 @@
 import { Page } from "playwright";
 import { Product } from "../models/product.js";
 import { SiteConfig } from "../models/site-config.js";
+import { URLManager } from "../utils/index.js";
 
 /**
  * Page type enumeration for different adapter behaviors
@@ -40,9 +41,11 @@ export interface ExtractionContext {
  */
 export abstract class BaseAdapter {
   protected siteConfig: SiteConfig;
+  protected urlManager: URLManager;
 
   constructor(siteConfig: SiteConfig) {
     this.siteConfig = siteConfig;
+    this.urlManager = new URLManager([siteConfig]);
   }
 
   /**
@@ -89,14 +92,19 @@ export abstract class BaseAdapter {
   }
 
   /**
-   * Normalize URL to ensure consistency
+   * Normalize URL to ensure consistency using URLManager
    */
   protected normalizeUrl(url: string): string {
     try {
-      const urlObj = new URL(url, this.siteConfig.base_url);
-      return urlObj.toString();
+      return this.urlManager.normalizeURL(url, this.siteConfig.name);
     } catch {
-      return url;
+      // Fallback to basic URL construction
+      try {
+        const urlObj = new URL(url, this.siteConfig.base_url);
+        return urlObj.toString();
+      } catch {
+        return url;
+      }
     }
   }
 
