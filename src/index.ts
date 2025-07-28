@@ -23,6 +23,7 @@ const motoheavenConfig = SiteConfigSchema.parse({
   categories: ["helmets", "jackets", "gloves", "boots", "pants", "accessories"],
 
   selectors: {
+    // Collection page selectors
     product_container: ".product-item",
     product_name: ".product-item__product-title",
     price: ".product-item__price-main",
@@ -30,6 +31,18 @@ const motoheavenConfig = SiteConfigSchema.parse({
     stock_status: ".product-item__stock", // May not exist on listing pages
     brand: ".product-item__product-vendor",
     images: ".product-item__image img",
+    
+    // Product page selectors (updated based on actual MotoHeaven structure)
+    product_title: "h1",
+    product_brand: 'a[href*="/collections/"]', // Brand link like /collections/agv
+    product_sku: 'text', // Will extract from text content
+    product_images: 'img[alt*="AGV"], .product-media img, img[src*="agv"], img[src*="helmet"]',
+    product_description: '.product-description, [data-testid="description"], .description',
+    product_specifications: '.product-specs, .specifications, .spec-table',
+    product_variants: 'button', // Size buttons M, L, XL
+    product_price: '.product-price, [class*="price"]',
+    
+    // Legacy selectors for compatibility
     description: ".product-description",
     specifications: ".product-specs",
     variants: ".product-variants",

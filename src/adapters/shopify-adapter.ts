@@ -266,18 +266,68 @@ export class ShopifyAdapter extends BaseAdapter {
       );
       const priceData = this.parsePrice(priceText || "");
 
-      // Extract brand
-      const brand =
-        (await this.safeExtractText(
-          page,
-          ".product-vendor, .brand, [data-vendor]"
-        )) || "Unknown";
+      // Extract brand - enhanced for MotoHeaven structure
+      let brand = await this.safeExtractText(
+        page,
+        ".product-vendor, .brand, [data-vendor]"
+      );
 
-      // Extract SKU
-      const sku = await this.safeExtractText(
+      // MotoHeaven-specific brand extraction from brand link (avoid navigation links)
+      if (!brand || brand === "Unknown") {
+        // Look for brand link in main content area, not navigation
+        const brandElements = await page.$$('main a[href*="/collections/"]:not([href*="/clearance"]):not([href*="/sale"])');
+        for (const brandLink of brandElements) {
+          const brandText = await brandLink.textContent();
+          const href = await brandLink.getAttribute('href');
+          
+          // Skip breadcrumbs, navigation elements
+          const className = await brandLink.getAttribute('class') || '';
+          
+          // Filter out breadcrumbs, navigation buttons, and category links
+          if (brandText && brandText.trim() && 
+              !brandText.toLowerCase().includes('clearance') &&
+              !brandText.toLowerCase().includes('sale') &&
+              !brandText.toLowerCase().includes('motorcycle helmets') &&
+              !brandText.toLowerCase().includes('next') &&
+              !brandText.toLowerCase().includes('previous') &&
+              !className.includes('breadcrumb') &&
+              !className.includes('navigation') &&
+              brandText.length > 1 && brandText.length < 20 &&
+              href && href.match(/\/collections\/[a-z-]+$/)) { // Only direct brand collection URLs
+            brand = brandText.replace(/\s+(Premium|Helmets?|Collection|Brand).*$/i, '').trim();
+            break;
+          }
+        }
+      }
+
+      // Extract from product title if still not found
+      if (!brand || brand === "Unknown") {
+        const titleText = name.toLowerCase();
+        const knownBrands = ['agv', 'shark', 'shoei', 'alpinestars', 'arai', 'bell', 'hjc', 'scorpion'];
+        for (const knownBrand of knownBrands) {
+          if (titleText.includes(knownBrand)) {
+            brand = knownBrand.charAt(0).toUpperCase() + knownBrand.slice(1);
+            break;
+          }
+        }
+      }
+
+      brand = brand || "Unknown";
+
+      // Extract SKU - enhanced for MotoHeaven structure
+      let sku = await this.safeExtractText(
         page,
         ".sku, [data-sku], .product-sku"
       );
+      
+      // MotoHeaven-specific SKU extraction from text content
+      if (!sku) {
+        const bodyText = await page.textContent('body') || '';
+        const skuMatch = bodyText.match(/SKU:\s*([^\s\n]+)/);
+        if (skuMatch) {
+          sku = skuMatch[1];
+        }
+      }
 
       // Extract category from breadcrumbs or URL
       const category = await this.extractCategory(page, url);
@@ -285,11 +335,36 @@ export class ShopifyAdapter extends BaseAdapter {
       // Extract images
       const images = await this.extractImages(page);
 
-      // Extract description
-      const description = await this.safeExtractText(
+      // Extract description - enhanced for MotoHeaven structure  
+      let description = await this.safeExtractText(
         page,
         ".product-description, .product-content, [data-product-description]"
       );
+      
+      // MotoHeaven-specific: try to get expanded description from collapsible sections
+      if (!description) {
+        // Look for expanded description sections (MotoHeaven uses collapsible descriptions)
+        const expandedSections = await page.$$('[aria-expanded="true"] + div, [aria-expanded="true"] ~ div');
+        for (const section of expandedSections) {
+          const sectionText = await section.textContent();
+          if (sectionText && sectionText.length > 100) {
+            description = sectionText.trim();
+            break;
+          }
+        }
+      }
+      
+      // Fallback to any large text block that might be product description
+      if (!description) {
+        const textBlocks = await page.$$('p, div');
+        for (const block of textBlocks) {
+          const text = await block.textContent();
+          if (text && text.length > 100 && text.toLowerCase().includes('helmet')) {
+            description = text.trim();
+            break;
+          }
+        }
+      }
 
       // Extract variants
       const variants = await this.extractVariants(page);
@@ -454,14 +529,24 @@ export class ShopifyAdapter extends BaseAdapter {
   }
 
   /**
-   * Extract product images
+   * Extract product images - enhanced for MotoHeaven structure
    */
   private async extractImages(page: Page): Promise<string[]> {
     const imageSelectors = [
       ".product-images img",
-      ".product-gallery img",
+      ".product-gallery img", 
       ".product-media img",
       "[data-product-image]",
+      // MotoHeaven-specific selectors
+      'img[alt*="AGV"]',
+      'img[alt*="Shark"]', 
+      'img[alt*="Shoei"]',
+      'img[alt*="Alpinestars"]',
+      'img[src*="agv"]',
+      'img[src*="helmet"]',
+      // Generic product image selectors
+      ".product-form img",
+      ".product-single img"
     ];
 
     const allImages: string[] = [];
@@ -471,8 +556,22 @@ export class ShopifyAdapter extends BaseAdapter {
       allImages.push(...images);
     }
 
+    // Filter out small icons, logos, and non-product images
+    const productImages = allImages.filter(imgSrc => {
+      const url = imgSrc.toLowerCase();
+      return (
+        !url.includes('logo') &&
+        !url.includes('icon') &&
+        !url.includes('payment') &&
+        !url.includes('social') &&
+        !url.includes('trustpilot') &&
+        (url.includes('agv') || url.includes('helmet') || url.includes('motorcycle') || 
+         url.includes('product') || url.includes('cdn.shop'))
+      );
+    });
+
     // Normalize and deduplicate
-    return Array.from(new Set(allImages.map((img) => this.normalizeUrl(img))));
+    return Array.from(new Set(productImages.map((img) => this.normalizeUrl(img))));
   }
 
   /**
@@ -551,11 +650,42 @@ export class ShopifyAdapter extends BaseAdapter {
           if (variant) variants.push(variant);
         }
       }
+
+      // Strategy 4: MotoHeaven-specific size buttons
+      const sizeButtons = await page.$$('button');
+      for (const button of sizeButtons) {
+        const buttonText = await button.textContent();
+        const cleanText = buttonText?.trim();
+        
+        // Check if it's a size button
+        if (cleanText && ['XS', 'S', 'M', 'L', 'XL', 'XXL'].includes(cleanText)) {
+          const variant: ProductVariant = {
+            id: `size-${cleanText.toLowerCase()}-${Date.now()}`,
+            name: `Size ${cleanText}`,
+            type: "size",
+            value: cleanText,
+            price: {
+              regular: 0, // No price adjustment for size variants typically
+              currency: "AUD",
+            },
+            availability: {
+              in_stock: true, // Assume available if button exists
+              stock_status: "in_stock",
+            },
+          };
+          variants.push(variant);
+        }
+      }
     } catch {
       // Silently handle errors in variant extraction
     }
 
-    return variants;
+    // Remove duplicates based on type and value
+    const uniqueVariants = variants.filter((variant, index, array) => 
+      array.findIndex(v => v.type === variant.type && v.value === variant.value) === index
+    );
+
+    return uniqueVariants;
   }
 
   /**
@@ -626,7 +756,7 @@ export class ShopifyAdapter extends BaseAdapter {
           "";
         return label.trim();
       }, button);
-    } catch (error) {
+    } catch {
       return "";
     }
   }
