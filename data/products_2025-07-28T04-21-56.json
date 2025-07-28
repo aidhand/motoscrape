@@ -1,0 +1,731 @@
+[
+  {
+    "id": "motoheaven-agv-pista-gp-rr-catalunya-2008-limited-edition-helmet",
+    "name": "AGV Pista GP RR Catalunya 2008 Limited Edition Helmet",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 2089,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:20:27.663Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/agv-pista-gp-rr-catalunya-2008-limited-edition-helmet",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-agv-pista-gp-rr-motorcycle-helmet-gold-iridium",
+    "name": "AGV Pista GP RR Motorcycle Helmet - Gold Iridium",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 2089,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:20:27.932Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/agv-pista-gp-rr-motorcycle-helmet-gold-iridium",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-agv-pista-gp-rr-motorcycle-helmet-geuvera-motegi-2022",
+    "name": "AGV Pista GP RR Motorcycle Helmet - Geuvera Motegi 2022",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 2089,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:20:29.534Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/agv-pista-gp-rr-motorcycle-helmet-geuvera-motegi-2022",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-agv-pista-gp-rr-motorcycle-helmet-rossi-soleluna-2022",
+    "name": "AGV Pista GP RR Motorcycle Helmet - Rossi Soleluna 2022",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1899,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:20:37.532Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/agv-pista-gp-rr-motorcycle-helmet-rossi-soleluna-2022",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-agv-pista-gp-rr-helmet-carbon-red",
+    "name": "AGV Pista GP RR Motorcycle Helmet - Carbon/Red",
+    "brand": "Unknown",
+    "category": "agv-pista-gp-rr-motorcycle-helmet-carbon",
+    "price": {
+      "regular": 1899,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:20:38.749Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/agv-pista-gp-rr-helmet-carbon-red",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-agv-pista-gp-rr-intrepido-helmet-matt-carbon-black-red",
+    "name": "AGV Pista GP RR Intrepido Helmet - Matt Carbon/Black/Red",
+    "brand": "Unknown",
+    "category": "black",
+    "price": {
+      "regular": 1899,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:20:39.033Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/agv-pista-gp-rr-intrepido-helmet-matt-carbon-black-red",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-agv-pista-gp-rr-motorcycle-helmet-iridium",
+    "name": "AGV Pista GP RR Motorcycle Helmet - Iridium",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1804,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:20:47.428Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/agv-pista-gp-rr-motorcycle-helmet-iridium",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shark-aeron-gp-full-facce-helmet-replica-zarco",
+    "name": "Shark Aeron GP Full Facce Helmet - Replica Zarco",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1899,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:20:48.129Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shark-aeron-gp-full-facce-helmet-replica-zarco",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-agv-pista-gp-rr-soleluna-2023-limited-helmet",
+    "name": "AGV Pista GP RR Soleluna 2023 Limited Helmet",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1899,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:20:48.812Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/agv-pista-gp-rr-soleluna-2023-limited-helmet",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shark-race-r-pro-gp-replica-oliveira-signature-helmet",
+    "name": "Shark Race-R Pro GP Replica Oliveira Signature Helmet",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1757,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:20:57.241Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shark-race-r-pro-gp-replica-oliveira-signature-helmet",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shark-race-r-pro-gp-replica-martinator-signature-helmet",
+    "name": "Shark Race-R Pro GP Replica Martinator Signature Helmet",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1757,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:20:57.662Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shark-race-r-pro-gp-replica-martinator-signature-helmet",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shark-race-r-pro-gp-replica-zarco-chakra-helmet",
+    "name": "Shark Race-R Pro GP Replica Zarco Chakra Helmet",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1757,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:20:58.896Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shark-race-r-pro-gp-replica-zarco-chakra-helmet",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-agv-pista-gp-rr-motorcycle-helmet-matt-carbon",
+    "name": "AGV Pista GP RR Motorcycle Helmet - Matt Carbon",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1709,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:21:06.570Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/agv-pista-gp-rr-motorcycle-helmet-matt-carbon",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-agv-pista-gp-rr-motorcycle-full-face-helmet-glossy-carbon",
+    "name": "AGV Pista GP RR Motorcycle Full Face Helmet - Glossy Carbon",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1709,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:21:07.607Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/agv-pista-gp-rr-motorcycle-full-face-helmet-glossy-carbon",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shark-race-r-pro-gp-replica-zarco-signature-helmet",
+    "name": "Shark Race-R Pro GP Replica Zarco Signature Helmet",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1757,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:21:10.539Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shark-race-r-pro-gp-replica-zarco-signature-helmet",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-alpinestars-supertech-r10-helmet-element-carbon-red-white",
+    "name": "Alpinestars Supertech SR10 Element ECE 22.06 Helmet - Black/Carbon Bright Red/White Glossy",
+    "brand": "Unknown",
+    "category": "carbon-bright-red",
+    "price": {
+      "regular": 1614,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:21:18.117Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/alpinestars-supertech-r10-helmet-element-carbon-red-white",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-alpinestars-supertech-r10-helmet-element-carbon-silver-black",
+    "name": "Alpinestars Supertech SR10 Element ECE 22.06 Helmet - Black/Carbon Silver/Black Glossy",
+    "brand": "Unknown",
+    "category": "carbon-silver",
+    "price": {
+      "regular": 1614,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:21:18.541Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/alpinestars-supertech-r10-helmet-element-carbon-silver-black",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-alpinestars-supertech-r10-helmet-team-carbon-red-blue",
+    "name": "Alpinestars Supertech SR10 Team ECE 22.06 Helmet - Black/Carbon Red Fluo/Blue Matte",
+    "brand": "Unknown",
+    "category": "carbon-red-fluo",
+    "price": {
+      "regular": 1614,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:21:19.393Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/alpinestars-supertech-r10-helmet-team-carbon-red-blue",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-alpinestars-supertech-r10-helmet-team-carbon-red-white",
+    "name": "Alpinestars Supertech SR10 Team ECE 22.06 Helmet - Black/Carbon Red/White Glossy",
+    "brand": "Unknown",
+    "category": "carbon-red",
+    "price": {
+      "regular": 1614,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:21:28.309Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/alpinestars-supertech-r10-helmet-team-carbon-red-white",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shoei-x-spr-pro-helmet-a-marquez-73-v2-tc-2",
+    "name": "Shoei X-SPR Pro Helmet - A.Marquez 73 V2 TC-2",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1563,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:21:28.945Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shoei-x-spr-pro-helmet-a-marquez-73-v2-tc-2",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shoei-x-spr-pro-marquez-motegi-4-tc-1-helmet",
+    "name": "Shoei X-SPR Pro Marquez Motegi 4 TC-1 Helmet",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1563,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:21:29.177Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shoei-x-spr-pro-marquez-motegi-4-tc-1-helmet",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shoei-x-spr-pro-helmet-escalate-tc-1",
+    "name": "Shoei X-SPR Pro Helmet - Escalate TC-1",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1517,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:21:38.626Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shoei-x-spr-pro-helmet-escalate-tc-1",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shoei-x-spr-pro-marquez8-tc-1-helmet",
+    "name": "Shoei X-Spr Pro Marquez8 TC-1 Helmet",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1563,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:21:39.839Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shoei-x-spr-pro-marquez8-tc-1-helmet",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shoei-x-spr-pro-diggia2-tc-1-helmet",
+    "name": "Shoei X-Spr Pro Diggia2 Tc-1 Helmet",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1563,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:21:40.080Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shoei-x-spr-pro-diggia2-tc-1-helmet",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shoei-x-spr-pro-helmet-escalate-tc-10",
+    "name": "Shoei X-SPR Pro Helmet - Escalate TC-10",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1517,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:21:48.033Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shoei-x-spr-pro-helmet-escalate-tc-10",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shoei-x-spr-pro-helmet-escalate-tc-5",
+    "name": "Shoei X-SPR Pro Helmet - Escalate TC-5",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1517,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:21:49.343Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shoei-x-spr-pro-helmet-escalate-tc-5",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shoei-x-spr-pro-helmet-proxy-tc-11",
+    "name": "Shoei X-SPR Pro Helmet - Proxy TC-11",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1517,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:21:49.840Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shoei-x-spr-pro-helmet-proxy-tc-11",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  }
+]

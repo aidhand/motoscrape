@@ -1,0 +1,488 @@
+[
+  {
+    "id": "motoheaven-shoei-x-spr-pro-daijiro-tc-1-helmet",
+    "name": "Shoei X-Spr Pro Daijiro TC-1 Helmet",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1517,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:21:57.878Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shoei-x-spr-pro-daijiro-tc-1-helmet",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shoei-x-spr-pro-proxy-tc-10-helmet",
+    "name": "Shoei X-Spr Pro Proxy Tc-10 Helmet",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1517,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:21:59.011Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shoei-x-spr-pro-proxy-tc-10-helmet",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shoei-x-spr-pro-daijiro-tc-3-helmet",
+    "name": "Shoei X-Spr Pro Daijiro TC-3 Helmet",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1517,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:22:00.494Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shoei-x-spr-pro-daijiro-tc-3-helmet",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shoei-x-spr-pro-proxy-tc-6-helmet",
+    "name": "Shoei X-Spr Pro Proxy Tc-6 Helmet",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1517,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:22:07.312Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shoei-x-spr-pro-proxy-tc-6-helmet",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-hjc-rpha-1-joker-dc-comics-mc-48sf-helmet",
+    "name": "HJC RPHA 1 Joker DC Comics MC-48SF Helmet",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1439,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:22:09.617Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/hjc-rpha-1-joker-dc-comics-mc-48sf-helmet",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-hjc-rpha-1-toxin-marvel-mc-1sf-helmet",
+    "name": "HJC RPHA 1 Toxin Marvel MC-1SF Helmet",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1439,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:22:10.639Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/hjc-rpha-1-toxin-marvel-mc-1sf-helmet",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shoei-neotec3-anthem-tc-5-helmet",
+    "name": "Shoei Neotec 3 Anthem Tc-5 Helmet",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1425,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:22:19.600Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shoei-neotec3-anthem-tc-5-helmet",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shoei-neotec3-anthem-tc-10-helmet-white-red-blue",
+    "name": "Shoei Neotec 3 Anthem Tc-10 Helmet - White/Red/Blue",
+    "brand": "Unknown",
+    "category": "red",
+    "price": {
+      "regular": 1425,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:22:20.539Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shoei-neotec3-anthem-tc-10-helmet-white-red-blue",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shoei-neotec-3-anthem-tc-3-helmet-yellow-white-blue",
+    "name": "Shoei Neotec 3 Anthem TC-3 Helmet - Yellow/White/Blue",
+    "brand": "Unknown",
+    "category": "white",
+    "price": {
+      "regular": 1425,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:22:20.693Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shoei-neotec-3-anthem-tc-3-helmet-yellow-white-blue",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shoei-neotec3-grasp-tc-1-helmet",
+    "name": "Shoei Neotec 3 Grasp TC-1 Helmet",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1425,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:22:30.370Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shoei-neotec3-grasp-tc-1-helmet",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shoei-neotec3-anthem-tc-8-helmet-black-white-orange",
+    "name": "Shoei Neotec 3 Anthem Tc-8 Helmet - Black/White/Orange",
+    "brand": "Unknown",
+    "category": "white",
+    "price": {
+      "regular": 1425,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:22:30.673Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shoei-neotec3-anthem-tc-8-helmet-black-white-orange",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shoei-neotec-3-fragments-tc-2-helmet",
+    "name": "Shoei Neotec 3 Fragments TC-2 Helmet",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1425,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:22:30.862Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shoei-neotec-3-fragments-tc-2-helmet",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shoei-neotec3-grasp-tc-10-helmet",
+    "name": "Shoei Neotec 3 Grasp TC-10 Helmet",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1425,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:22:38.386Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shoei-neotec3-grasp-tc-10-helmet",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shoei-neotec3-grasp-tc-5-helmet",
+    "name": "Shoei Neotec 3 Grasp TC-5 Helmet",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1425,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:22:39.571Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shoei-neotec3-grasp-tc-5-helmet",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shoei-neotec3-satori-tc-5-helmet",
+    "name": "Shoei Neotec 3 Satori TC-5 Helmet",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1425,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:22:41.334Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shoei-neotec3-satori-tc-5-helmet",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-shoei-neotec3-satori-tc-6-helmet",
+    "name": "Shoei Neotec 3 Satori TC-6 Helmet",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1425,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:22:49.217Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/shoei-neotec3-satori-tc-6-helmet",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-alpinestars-supertech-r10-helmet-solid-white",
+    "name": "Alpinestars Supertech SR10 Solid ECE 22.06 Helmet - White Glossy/Black Matte",
+    "brand": "Unknown",
+    "category": "alpinestars-supertech-sr10-solid-ece-2206-helmet-white-glossy",
+    "price": {
+      "regular": 1424,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:22:49.909Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/alpinestars-supertech-r10-helmet-solid-white",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  },
+  {
+    "id": "motoheaven-alpinestars-supertech-r10-helmet-solid-carbon",
+    "name": "Alpinestars Supertech SR10 Solid ECE 22.06 Helmet -Black Carbon Matte & Glossy",
+    "brand": "Unknown",
+    "category": "motorcycle-helmets",
+    "price": {
+      "regular": 1424,
+      "currency": "AUD"
+    },
+    "availability": {
+      "in_stock": true,
+      "stock_status": "in_stock"
+    },
+    "variants": [],
+    "images": [],
+    "description": {
+      "features": [],
+      "specifications": {}
+    },
+    "metadata": {
+      "scraped_at": "2025-07-28T04:22:51.797Z",
+      "source_url": "https://www.motoheaven.com.au/collections/motorcycle-helmets/products/alpinestars-supertech-r10-helmet-solid-carbon",
+      "site": "motoheaven",
+      "scrape_quality_score": 0.6
+    },
+    "certifications": []
+  }
+]
