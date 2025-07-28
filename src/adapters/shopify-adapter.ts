@@ -626,7 +626,7 @@ export class ShopifyAdapter extends BaseAdapter {
           "";
         return label.trim();
       }, button);
-    } catch (error) {
+    } catch {
       return "";
     }
   }

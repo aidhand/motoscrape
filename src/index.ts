@@ -211,7 +211,8 @@ async function main() {
   }
 }
 
-if (import.meta.main) {
+// Check if this module is being run directly
+if (process.argv[1] === new URL(import.meta.url).pathname) {
   main().catch((error) => {
     console.error("❌ Unhandled error:", error);
     process.exit(1);
