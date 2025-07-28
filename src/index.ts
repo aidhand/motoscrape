@@ -4,164 +4,53 @@
  */
 
 import { ScraperOrchestrator } from "./core/index.js";
-import { AppSettingsSchema, SiteConfigSchema } from "./models/site-config.js";
+import { ConfigLoader } from "./config/index.js";
+import { createLogger } from "./utils/logging.js";
+
+const logger = createLogger('Main');
 
 console.log("🏍️  MotoScrape - Australian Motorcycle Gear Scraper");
 console.log("================================================");
 
-const motoheavenConfig = SiteConfigSchema.parse({
-  name: "motoheaven",
-  base_url: "https://www.motoheaven.com.au",
-  adapter_type: "shopify",
-
-  rate_limit: {
-    requests_per_minute: 30,
-    delay_between_requests: 5000,
-    concurrent_requests: 6,
-  },
-
-  categories: ["helmets", "jackets", "gloves", "boots", "pants", "accessories"],
-
-  selectors: {
-    // Collection page selectors
-    product_container: ".product-item",
-    product_name: ".product-item__product-title",
-    price: ".product-item__price-main",
-    sale_price: ".product-item__price-main", // Same element contains both regular and sale price
-    stock_status: ".product-item__stock", // May not exist on listing pages
-    brand: ".product-item__product-vendor",
-    images: ".product-item__image img",
-    
-    // Product page selectors (updated based on actual MotoHeaven structure)
-    product_title: "h1",
-    product_brand: 'a[href*="/collections/"]', // Brand link like /collections/agv
-    product_sku: 'text', // Will extract from text content
-    product_images: 'img[alt*="AGV"], .product-media img, img[src*="agv"], img[src*="helmet"]',
-    product_description: '.product-description, [data-testid="description"], .description',
-    product_specifications: '.product-specs, .specifications, .spec-table',
-    product_variants: 'button', // Size buttons M, L, XL
-    product_price: '.product-price, [class*="price"]',
-    
-    // Legacy selectors for compatibility
-    description: ".product-description",
-    specifications: ".product-specs",
-    variants: ".product-variants",
-  },
-
-  navigation: {
-    product_list_pattern: "/collections/{category}",
-    product_page_pattern: "/products/{slug}",
-    pagination_selector: ".pagination__next",
-    category_urls: {
-      helmets: "/collections/helmets",
-      jackets: "/collections/jackets",
-      gloves: "/collections/gloves",
-      boots: "/collections/boots",
-      pants: "/collections/pants",
-      accessories: "/collections/accessories",
-    },
-  },
-});
-
-/**
- * Example configuration for MCAS (custom platform)
- */
-const mcasConfig = SiteConfigSchema.parse({
-  name: "mcas",
-  base_url: "https://www.mcas.com.au",
-  adapter_type: "mcas",
-
-  rate_limit: {
-    requests_per_minute: 10,
-    delay_between_requests: 5000,
-    concurrent_requests: 1,
-  },
-
-  categories: [
-    "motorcycle-helmets",
-    "motorcycle-clothing",
-    "motorcycle-gloves",
-    "motorcycle-boots",
-  ],
-
-  selectors: {
-    product_container: ".product-grid-item",
-    product_name: ".product-name",
-    price: ".current-price",
-    sale_price: ".sale-price",
-    stock_status: ".stock-indicator",
-    brand: ".brand-name",
-    images: ".product-image img",
-    description: ".product-description",
-    specifications: ".product-specifications",
-  },
-
-  navigation: {
-    product_list_pattern: "/category/{category}",
-    product_page_pattern: "/product/{id}",
-    pagination_selector: ".pagination-next",
-  },
-});
-
-/**
- * Application settings
- */
-const appSettings = AppSettingsSchema.parse({
-  global_settings: {
-    headless: true,
-    timeout: 30000,
-    max_retries: 3,
-    max_concurrent_requests: 3,
-    delay_between_requests: 1000,
-    max_requests_per_minute: 60,
-    output_format: "json",
-    output_directory: "./data",
-    image_download: false,
-    image_directory: "./data/images",
-    log_level: "info", // Use "debug" for verbose logging, "warn" for minimal logging
-  },
-
-  browser_settings: {
-    viewport: {
-      width: 1920,
-      height: 1080,
-    },
-    user_agent:
-      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    locale: "en-AU",
-    timezone: "Australia/Sydney",
-  },
-});
-
 async function main() {
-  const scraper = new ScraperOrchestrator(appSettings, [
-    motoheavenConfig,
-    mcasConfig,
-  ]);
+  // Load configuration from files or environment variables
+  const { appSettings, siteConfigs } = ConfigLoader.loadFromEnvironment();
+
+  logger.info(`Loaded ${siteConfigs.length} site configurations`);
+  siteConfigs.forEach(config => {
+    logger.info(`Site config loaded: ${config.name} (${config.adapter_type}) - ${config.base_url}`);
+  });
+
+  const scraper = new ScraperOrchestrator(appSettings, siteConfigs);
 
   scraper.on("url-processed", (result) => {
     if (result.success) {
-      console.log(
-        `✅ Processed: ${result.url} (${result.data?.length} products, ${result.processingTime}ms)`
-      );
+      logger.info(`Processed URL successfully`, {
+        url: result.url,
+        products: result.data?.length || 0,
+        processingTime: `${result.processingTime}ms`
+      });
     } else {
-      console.log(`❌ Failed: ${result.url} - ${result.error}`);
+      logger.error(`Failed to process URL`, {
+        url: result.url,
+        error: result.error
+      });
     }
   });
 
   scraper.on("urls-added", (count) => {
-    console.log(`📝 Added ${count} URLs to queue`);
+    logger.info(`Added URLs to queue`, { count });
   });
 
   // Set up graceful shutdown
   process.on("SIGINT", async () => {
-    console.log("\n🛑 Shutting down gracefully...");
+    logger.info("Received SIGINT, shutting down gracefully...");
     await scraper.stop();
     process.exit(0);
   });
 
   process.on("SIGTERM", async () => {
-    console.log("\n🛑 Received SIGTERM, shutting down...");
+    logger.info("Received SIGTERM, shutting down gracefully...");
     await scraper.stop();
     process.exit(0);
   });
@@ -169,64 +58,60 @@ async function main() {
   try {
     await scraper.start();
 
-    // Add initial URLs
-    const initialUrls = [
-      {
-        url: "https://www.motoheaven.com.au/collections/helmets",
-        siteName: "motoheaven",
-        priority: 10,
-      },
-      {
-        url: "https://www.motoheaven.com.au/collections/jackets",
-        siteName: "motoheaven",
-        priority: 9,
-      },
-      {
-        url: "https://www.motoheaven.com.au/collections/gloves",
-        siteName: "motoheaven",
-        priority: 8,
-      },
-    ];
+    // Add initial URLs based on configured sites
+    const initialUrls = siteConfigs.flatMap(siteConfig => {
+      const categoryUrls = siteConfig.navigation?.category_urls;
+      if (!categoryUrls) return [];
 
-    console.log(`📝 Adding ${initialUrls.length} URLs to queue...`);
+      return Object.entries(categoryUrls).map(([category, path], index) => ({
+        url: `${siteConfig.base_url}${path}`,
+        siteName: siteConfig.name,
+        priority: 10 - index, // Higher priority for earlier categories
+      }));
+    });
+
+    logger.info(`Adding initial URLs to queue`, { count: initialUrls.length });
     scraper.addUrls(initialUrls);
 
     const monitorInterval = setInterval(() => {
       const stats = scraper.getStats();
       const queueStatus = scraper.getQueueStatus();
 
-      console.log(
-        `📊 Stats: ${stats.successful}/${stats.totalProcessed} successful, Queue: ${queueStatus.pending} pending, ${queueStatus.processing} processing`
-      );
+      logger.info('Processing status', {
+        successful: stats.successful,
+        totalProcessed: stats.totalProcessed,
+        pending: queueStatus.pending,
+        processing: queueStatus.processing
+      });
 
       if (queueStatus.pending === 0 && queueStatus.processing === 0) {
         clearInterval(monitorInterval);
-        console.log("✅ All processing complete!");
+        logger.info("All processing complete!");
 
         // Final stats
-        console.log("📈 Final Statistics:");
-        console.log(`  - Total processed: ${stats.totalProcessed}`);
-        console.log(`  - Successful: ${stats.successful}`);
-        console.log(`  - Failed: ${stats.failed}`);
-        console.log(
-          `  - Average processing time: ${Math.round(stats.averageProcessingTime)}ms`
-        );
-        console.log(`  - Rate limit hits: ${stats.rateLimitHits}`);
-        console.log(`  - Uptime: ${Math.round(stats.uptime / 1000)}s`);
+        logger.info("Final statistics", {
+          totalProcessed: stats.totalProcessed,
+          successful: stats.successful,
+          failed: stats.failed,
+          averageProcessingTime: `${Math.round(stats.averageProcessingTime)}ms`,
+          rateLimitHits: stats.rateLimitHits,
+          uptime: `${Math.round(stats.uptime / 1000)}s`
+        });
 
         // Stop the scraper
         scraper.stop();
       }
     }, 10000);
   } catch (error) {
-    console.error("❌ Fatal error:", error);
+    logger.error("Fatal error occurred", { error: error instanceof Error ? error.message : String(error) });
     process.exit(1);
   }
 }
 
-if (import.meta.main) {
+// Check if this module is being run directly
+if (import.meta.url === `file://${process.argv[1]}`) {
   main().catch((error) => {
-    console.error("❌ Unhandled error:", error);
+    logger.error("Unhandled error in main", { error: error instanceof Error ? error.message : String(error) });
     process.exit(1);
   });
 }

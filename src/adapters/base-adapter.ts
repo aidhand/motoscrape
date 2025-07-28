@@ -37,7 +37,26 @@ export interface ExtractionContext {
 }
 
 /**
- * Abstract base adapter class for all site-specific adapters
+ * Abstract base adapter class for all site-specific adapters.
+ * 
+ * This class provides common functionality and enforces a consistent interface
+ * for all site adapters. Each concrete adapter must implement the abstract methods
+ * to handle site-specific scraping logic.
+ * 
+ * @example
+ * ```typescript
+ * class MyAdapter extends BaseAdapter {
+ *   async identifyPageType(url: string, page: Page): Promise<PageType> {
+ *     // Implementation here
+ *   }
+ *   
+ *   async extractProduct(context: ExtractionContext): Promise<Product | null> {
+ *     // Implementation here
+ *   }
+ *   
+ *   // ... other required methods
+ * }
+ * ```
  */
 export abstract class BaseAdapter {
   protected siteConfig: SiteConfig;
@@ -49,31 +68,67 @@ export abstract class BaseAdapter {
   }
 
   /**
-   * Determine the type of page from URL and content
+   * Determine the type of page from URL and content.
+   * 
+   * This method analyzes the URL structure and page content to identify
+   * what type of page is being processed (product, collection, search, etc.).
+   * This is crucial for determining the appropriate extraction strategy.
+   * 
+   * @param url - The URL being processed
+   * @param page - Playwright page instance for content analysis
+   * @returns Promise resolving to the identified page type
    */
   abstract identifyPageType(url: string, page: Page): Promise<PageType>;
 
   /**
-   * Discover product URLs from collection/category pages
+   * Discover product URLs from collection/category pages.
+   * 
+   * This method processes collection or category pages to find individual
+   * product URLs. It should also detect pagination and provide information
+   * about next pages to process.
+   * 
+   * @param context - Extraction context containing page, URL, and configuration
+   * @returns Promise resolving to discovery results with found URLs and pagination info
    */
   abstract discoverProducts(
     context: ExtractionContext
   ): Promise<DiscoveryResult>;
 
   /**
-   * Extract detailed product information from individual product pages
+   * Extract detailed product information from individual product pages.
+   * 
+   * This is the main extraction method that processes individual product pages
+   * and extracts comprehensive product information including variants, images,
+   * specifications, and pricing.
+   * 
+   * @param context - Extraction context containing page, URL, and configuration
+   * @returns Promise resolving to extracted product data or null if extraction fails
    */
   abstract extractProduct(context: ExtractionContext): Promise<Product | null>;
 
   /**
-   * Extract basic product information from collection/listing pages
+   * Extract basic product information from collection/listing pages.
+   * 
+   * This method extracts summary information about products from listing pages,
+   * such as name, price, and thumbnail image. This is useful for quick overview
+   * data before processing individual product pages.
+   * 
+   * @param context - Extraction context containing page, URL, and configuration
+   * @returns Promise resolving to array of partial product data
    */
   abstract extractProductSummary(
     context: ExtractionContext
   ): Promise<Partial<Product>[]>;
 
   /**
-   * Check if a URL matches this adapter's patterns
+   * Check if a URL matches this adapter's patterns.
+   * 
+   * This method determines whether this adapter can handle a given URL.
+   * It should check URL patterns, domain matching, and any other criteria
+   * specific to the target site.
+   * 
+   * @param url - The URL to check
+   * @returns True if this adapter can handle the URL, false otherwise
    */
   abstract canHandle(url: string): boolean;
 

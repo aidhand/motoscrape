@@ -50,6 +50,214 @@ A high-performance TypeScript web scraper designed specifically for Australian m
 
 ### Prerequisites
 
+- Node.js 18+ (recommended: use latest LTS)
+- pnpm (package manager)
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/aidhand/motoscrape.git
+cd motoscrape
+
+# Install dependencies
+pnpm install
+
+# Initialize configuration (optional)
+pnpm run cli config:init ./config
+```
+
+### Configuration
+
+MotoScrape uses a flexible configuration system that supports both file-based and environment-based configuration.
+
+#### Option 1: Environment Variables (Recommended)
+
+```bash
+# Set configuration file paths
+export MOTOSCRAPE_APP_CONFIG=/path/to/app-settings.json
+export MOTOSCRAPE_SITE_CONFIGS=/path/to/site-configs.json
+
+# Or use default configurations (no setup required)
+pnpm start
+```
+
+#### Option 2: File-based Configuration
+
+```bash
+# Generate configuration templates
+pnpm run cli config:init ./my-config
+
+# Validate your configuration
+pnpm run cli config:validate ./my-config/app-settings.json ./my-config/site-configs.json
+
+# List available site configurations
+pnpm run cli config:list
+```
+
+#### Configuration Structure
+
+**App Settings** (`app-settings.json`):
+```json
+{
+  "global_settings": {
+    "headless": true,
+    "timeout": 30000,
+    "max_retries": 3,
+    "max_concurrent_requests": 3,
+    "delay_between_requests": 1000,
+    "max_requests_per_minute": 60,
+    "output_format": "json",
+    "output_directory": "./data",
+    "log_level": "info"
+  },
+  "browser_settings": {
+    "viewport": { "width": 1920, "height": 1080 },
+    "user_agent": "Mozilla/5.0...",
+    "locale": "en-AU",
+    "timezone": "Australia/Sydney"
+  }
+}
+```
+
+**Site Configurations** (`site-configs.json`):
+```json
+{
+  "sites": [
+    {
+      "name": "motoheaven",
+      "base_url": "https://www.motoheaven.com.au",
+      "adapter_type": "shopify",
+      "rate_limit": {
+        "requests_per_minute": 30,
+        "delay_between_requests": 5000,
+        "concurrent_requests": 6
+      },
+      "categories": ["helmets", "jackets", "gloves"],
+      "selectors": {
+        "product_container": ".product-item",
+        "product_name": ".product-item__product-title",
+        "price": ".product-item__price-main"
+      },
+      "navigation": {
+        "category_urls": {
+          "helmets": "/collections/helmets",
+          "jackets": "/collections/jackets"
+        }
+      }
+    }
+  ]
+}
+```
+
+### Running the Scraper
+
+```bash
+# Start scraping with default configuration
+pnpm start
+
+# Or use CLI for configuration management
+pnpm run cli help
+```
+
+## 🛠️ Development
+
+### Code Organization
+
+The codebase follows a modular architecture designed for maintainability:
+
+```
+src/
+├── adapters/           # Site-specific scrapers
+│   ├── base-adapter.ts     # Abstract base class
+│   ├── shopify-adapter.ts  # Shopify platform adapter
+│   └── mcas-adapter.ts     # MCAS platform adapter
+├── config/             # Configuration management
+│   ├── app-settings.ts     # Default app settings
+│   ├── site-configs.ts     # Site configurations
+│   └── config-loader.ts    # Configuration loading logic
+├── core/               # Core scraping logic
+│   ├── scraper-orchestrator.ts  # Main coordinator
+│   ├── browser-manager.ts       # Browser automation
+│   ├── queue-manager.ts         # URL queue management
+│   └── rate-limiter.ts          # Rate limiting
+├── models/             # Data models and schemas
+│   ├── product.ts          # Product data structure
+│   ├── variant.ts          # Product variant structure
+│   └── site-config.ts      # Configuration schemas
+├── storage/            # Data persistence
+├── utils/              # Shared utilities
+│   ├── error-handling.ts   # Standardized error handling
+│   ├── logging.ts          # Centralized logging
+│   └── data-normalizer.ts  # Data processing
+├── cli.ts              # Command-line interface
+└── index.ts            # Main entry point
+```
+
+### Development Workflow
+
+```bash
+# Type checking
+pnpm run typecheck
+
+# Linting and formatting
+pnpm run lint
+pnpm run format
+
+# Running tests
+pnpm run test           # Watch mode
+pnpm run test:run      # Single run
+pnpm run test:ui       # UI mode
+
+# Configuration management
+pnpm run cli config:init     # Initialize config templates
+pnpm run cli config:validate # Validate configurations
+pnpm run cli config:list     # List available sites
+```
+
+### Key Maintainability Features
+
+1. **Type Safety**: Full TypeScript with strict mode enabled
+2. **Configuration Management**: Externalized, validated configurations
+3. **Error Handling**: Standardized error types with recovery strategies  
+4. **Logging**: Structured logging with contextual information
+5. **Modular Architecture**: Clear separation of concerns
+6. **Testing**: Comprehensive unit test coverage
+7. **Documentation**: JSDoc comments throughout codebase
+
+### Adding New Sites
+
+1. Create site configuration in `site-configs.ts` or external JSON file
+2. Choose appropriate adapter type (`shopify`, `mcas`, or `generic`)
+3. Configure selectors for data extraction
+4. Test with `pnpm run cli config:validate`
+5. Run scraper to verify functionality
+
+### Error Handling
+
+The scraper uses a sophisticated error handling system:
+
+```typescript
+import { withRetry, createScrapingError, ErrorType } from './utils/error-handling.js';
+
+// Automatic retry with exponential backoff
+const result = await withRetry(
+  () => page.goto(url),
+  maxRetries: 3,
+  backoffMs: 1000,
+  { url, site: 'motoheaven' }
+);
+```
+
+Error types are classified and handled appropriately:
+- `NETWORK`: Temporary network issues (recoverable)
+- `RATE_LIMIT`: Rate limiting hit (recoverable with delay)
+- `PARSING`: Data extraction failures (may be recoverable)
+- `CONFIGURATION`: Setup issues (not recoverable)
+- `VALIDATION`: Data validation failures (not recoverable)
+
+### Prerequisites
+
 - [Node.js](https://nodejs.org/) (v18+)
 - [pnpm](https://pnpm.io/) package manager
 

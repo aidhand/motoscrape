@@ -7,6 +7,7 @@ import { AppSettings, SiteConfig } from "../models/site-config.js";
 import { Product } from "../models/product.js";
 import { adapterRegistry, PageType } from "../adapters/index.js";
 import { EventEmitter } from "events";
+import { createLogger, Logger, initializeLogging } from "../utils/logging.js";
 
 export interface ScrapingResult {
   success: boolean;
@@ -44,9 +45,17 @@ export class ScraperOrchestrator extends EventEmitter {
   private stats: ScrapingStats;
   private processingIntervals: NodeJS.Timeout[] = [];
   private collectedProducts: Product[] = [];
+  private logger: Logger;
 
   constructor(settings: AppSettings, siteConfigs: SiteConfig[] = []) {
     super();
+
+    // Initialize logging
+    initializeLogging({ 
+      level: settings.global_settings.log_level || 'info',
+      maxLogs: 1000 
+    });
+    this.logger = createLogger('ScraperOrchestrator');
 
     this.settings = settings;
     this.browserManager = new BrowserManager(settings);
