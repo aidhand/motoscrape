@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "tsx ./src/index.ts",
+    "cli": "tsx ./src/cli.ts",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
