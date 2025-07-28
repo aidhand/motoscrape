@@ -3,33 +3,24 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "tsc",
-    "start": "tsx index.ts",
+    "start": "tsx ./src/index.ts",
     "lint": "oxlint --fix .",
     "format": "prettier --write --experimental-cli .",
     "typecheck": "tsc --noEmit",
-    "postinstall": "playwright install"
+    "postinstall:playwright": "pnpm exec playwright install chromium",
+    "postinstall": "pnpm run postinstall:playwright"
   },
   "dependencies": {
-    "@browserbasehq/sdk": "^2.6.0",
-    "@browserbasehq/stagehand": "^2.4.1",
-    "@playwright/test": "^1.49.1",
-    "boxen": "^8.0.1",
-    "chalk": "^5.3.0",
-    "dotenv": "^16.4.7",
-    "zod": "^3.22.4",
-    "ai": "^4.3.19",
-    "@ai-sdk/openai": "^1.3.23",
-    "openai": "^5.10.2"
+    "playwright": "^1.54.1",
+    "zod": "^4.0.10"
   },
   "devDependencies": {
-    "@types/bun": "latest",
+    "@prettier/plugin-oxc": "latest",
     "@types/node": "latest",
+    "@typescript/native-preview": "latest",
     "oxlint": "latest",
     "prettier": "latest",
-    "@prettier/plugin-oxc": "latest",
-    "tsx": "^4.19.2",
-    "typescript": "latest",
-    "@typescript/native-preview": "latest"
+    "tsx": "^4.20.3",
+    "typescript": "latest"
   }
 }

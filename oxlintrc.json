@@ -1,10 +1,4 @@
 {
-  "rules": {
-    "typescript/no-unused-vars": "warn",
-    "typescript/no-explicit-any": "warn",
-    "typescript/prefer-const": "error",
-    "typescript/no-non-null-assertion": "warn"
-  },
   "env": {
     "browser": true,
     "node": true,

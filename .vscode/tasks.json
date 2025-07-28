@@ -2,125 +2,37 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "lint",
-      "type": "shell",
-      "command": "bun",
-      "args": ["run", "lint"],
-      "group": {
-        "kind": "build",
-        "isDefault": false
-      },
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared",
-        "showReuseMessage": true,
-        "clear": false
-      },
-      "problemMatcher": [
-        {
-          "owner": "oxlint",
-          "fileLocation": ["relative", "${workspaceFolder}"],
-          "pattern": {
-            "regexp": "^\\s+(.*):(\\d+):(\\d+):\\s+(warning|error)\\s+(.*)$",
-            "file": 1,
-            "line": 2,
-            "column": 3,
-            "severity": 4,
-            "message": 5
-          }
-        }
-      ]
+      "label": "Start",
+      "detail": "Run the main scraper application",
+      "type": "process",
+      "command": "pnpm",
+      "args": ["run", "start"],
+      "group": "build"
     },
     {
-      "label": "lint:check",
-      "type": "shell",
-      "command": "bun",
-      "args": ["run", "lint:check"],
-      "group": {
-        "kind": "test",
-        "isDefault": false
-      },
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared",
-        "showReuseMessage": true,
-        "clear": false
-      },
-      "problemMatcher": [
-        {
-          "owner": "oxlint",
-          "fileLocation": ["relative", "${workspaceFolder}"],
-          "pattern": {
-            "regexp": "^\\s+(.*):(\\d+):(\\d+):\\s+(warning|error)\\s+(.*)$",
-            "file": 1,
-            "line": 2,
-            "column": 3,
-            "severity": 4,
-            "message": 5
-          }
-        }
-      ]
-    },
-    {
-      "label": "typecheck",
-      "type": "shell",
-      "command": "bun",
+      "label": "Typecheck",
+      "detail": "Run type checking",
+      "type": "process",
+      "command": "pnpm",
       "args": ["run", "typecheck"],
-      "group": {
-        "kind": "build",
-        "isDefault": false
-      },
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared",
-        "showReuseMessage": true,
-        "clear": false
-      },
+      "group": "test",
       "problemMatcher": ["$tsc"]
     },
     {
-      "label": "format",
-      "type": "shell",
-      "command": "bun",
-      "args": ["run", "format"],
-      "group": {
-        "kind": "build",
-        "isDefault": false
-      },
-      "presentation": {
-        "echo": true,
-        "reveal": "silent",
-        "focus": false,
-        "panel": "shared",
-        "showReuseMessage": true,
-        "clear": false
-      },
-      "problemMatcher": []
+      "label": "Lint",
+      "detail": "Run code linting",
+      "type": "process",
+      "command": "pnpm",
+      "args": ["run", "lint"],
+      "group": "test"
     },
     {
-      "label": "format:check",
-      "type": "shell",
-      "command": "bun",
-      "args": ["run", "format:check"],
-      "group": {
-        "kind": "test",
-        "isDefault": false
-      },
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared",
-        "showReuseMessage": true,
-        "clear": false
-      },
-      "problemMatcher": []
+      "label": "Format",
+      "detail": "Run code formatting",
+      "type": "process",
+      "command": "pnpm",
+      "args": ["run", "format"],
+      "group": "test"
     }
   ]
 }
