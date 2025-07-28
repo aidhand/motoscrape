@@ -266,74 +266,34 @@ export class ShopifyAdapter extends BaseAdapter {
       );
       const priceData = this.parsePrice(priceText || "");
 
-      // Extract brand - enhanced for MotoHeaven structure
+      // Extract brand with comprehensive selectors and fallback logic
       let brand = await this.safeExtractText(
         page,
-        ".product-vendor, .brand, [data-vendor]"
+        [
+          // Standard Shopify selectors
+          ".product-vendor",
+          ".brand",
+          "[data-vendor]",
+          // Site-specific selectors from configuration
+          this.siteConfig.selectors.brand,
+          // Additional common selectors
+          ".product-brand",
+          ".vendor",
+          ".product-meta .brand",
+          ".product-details .brand",
+          "[data-product-vendor]",
+          ".product-vendor-name",
+        ]
+          .filter(Boolean)
+          .join(", ")
       );
 
-      // MotoHeaven-specific brand extraction from brand link (avoid navigation links)
+      // If brand extraction failed, try to infer from product name
       if (!brand || brand === "Unknown") {
-        // Look for brand link in main content area, not navigation
-        const brandElements = await page.$$(
-          'main a[href*="/collections/"]:not([href*="/clearance"]):not([href*="/sale"])'
-        );
-        for (const brandLink of brandElements) {
-          const brandText = await brandLink.textContent();
-          const href = await brandLink.getAttribute("href");
-
-          // Skip breadcrumbs, navigation elements
-          const className = (await brandLink.getAttribute("class")) || "";
-
-          // Filter out breadcrumbs, navigation buttons, and category links
-          if (
-            brandText &&
-            brandText.trim() &&
-            !brandText.toLowerCase().includes("clearance") &&
-            !brandText.toLowerCase().includes("sale") &&
-            !brandText.toLowerCase().includes("motorcycle helmets") &&
-            !brandText.toLowerCase().includes("next") &&
-            !brandText.toLowerCase().includes("previous") &&
-            !className.includes("breadcrumb") &&
-            !className.includes("navigation") &&
-            brandText.length > 1 &&
-            brandText.length < 20 &&
-            href &&
-            href.match(/\/collections\/[a-z-]+$/)
-          ) {
-            // Only direct brand collection URLs
-            brand = brandText
-              .replace(/\s+(Premium|Helmets?|Collection|Brand).*$/i, "")
-              .trim();
-            break;
-          }
-        }
+        brand = this.inferBrandFromName(name) || "Unknown";
       }
 
-      // Extract from product title if still not found
-      if (!brand || brand === "Unknown") {
-        const titleText = name.toLowerCase();
-        const knownBrands = [
-          "agv",
-          "shark",
-          "shoei",
-          "alpinestars",
-          "arai",
-          "bell",
-          "hjc",
-          "scorpion",
-        ];
-        for (const knownBrand of knownBrands) {
-          if (titleText.includes(knownBrand)) {
-            brand = knownBrand.charAt(0).toUpperCase() + knownBrand.slice(1);
-            break;
-          }
-        }
-      }
-
-      brand = brand || "Unknown";
-
-      // Extract SKU - enhanced for MotoHeaven structure
+      // Extract SKU
       let sku = await this.safeExtractText(
         page,
         ".sku, [data-sku], .product-sku"
@@ -1017,9 +977,6 @@ export class ShopifyAdapter extends BaseAdapter {
     return { in_stock: true, stock_status: "in_stock" };
   }
 
-  /**
-   * Calculate a quality score for the extracted data
-   */
   /**
    * Infer brand from product name using common motorcycle gear brands
    */
